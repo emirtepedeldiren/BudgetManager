@@ -99,6 +99,20 @@ class BudgetApp(ctk.CTk):
                 return False
         return False
     
+    def _optimize_system_environment(self):
+        import platform
+        
+        current_os = platform.system()
+        
+        if current_os == "Darwin":
+            
+            os.environ["TK_SILENCE_DEPRECATION"] = "1"
+        
+        elif current_os == "Windows":
+            
+            pass
+        return True
+    
     def get_all_categories(self):
         return self.DEVELOPER_CATEGORIES + self.user_categories
     
