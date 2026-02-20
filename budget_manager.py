@@ -218,23 +218,28 @@ class BudgetApp(ctk.CTk):
     def add_transaction(self):
         amt = self.amount_input.get()
         
-        if amt.replace('.', '', 1).isdigit() and amt != "":
-            amt_val = float(amt) 
-            
-            rates = self.get_exchange_rates(base_currency="TRY")
-            rate = rates.get(self.selected_currency, 1.0)
+        if not amt or not amt.replace('.', '', 1).isdigit():
+            messagebox.showerror("Error", "Invalid amount! Please enter a number.")
+            return
+        
+        amt_val = float(amt)
 
-            amount_in_try = amt_val / rate
-            
-            if amt_val > self.current_balance:
-                messagebox.showwarning("Warning", "Insufficient funds!")
-                return 
-            
-            self.current_balance -= amt_val
-            self.update_currency(self.selected_currency)
+        rates = self.get_exchange_rates(base_currency="TRY")
+        rate = rates.get(self.selected_currency, 1.0)
+
+        amount_in_try = amt_val / rate
+
+        if amount_in_try > self.current_balance:
+            messagebox.showerror("Error", "Insufficient balance for this expense.")
+            return
+        
+        self.current_balance -= amount_in_try
+
+        self.update_currency(self.selected_currency)
+
                                 
 
-            entry = {
+        entry = {
                 "date": self.date_input.get(), 
                 "category": self.category_menu.get(),
                 "name": self.name_entry.get(), 
@@ -243,18 +248,15 @@ class BudgetApp(ctk.CTk):
                 "original_currency" : self.selected_currency
             }
             
-            self.transactions.append(entry)
-            self.save_data()
-            self.add_to_history_ui(entry)
+        self.transactions.append(entry)
+        self.save_data()
+        self.add_to_history_ui(entry)
             
-            self.date_input.delete(0, 'end')
-            self.name_entry.delete(0, 'end')
-            self.amount_input.delete(0, 'end')
+        self.date_input.delete(0, 'end')
+        self.name_entry.delete(0, 'end')
+        self.amount_input.delete(0, 'end')
             
-        else:
-            
-            messagebox.showerror("Error", "Invalid amount! Please enter a number.")
-
+        
     def add_income(self):
         
         dialog = ctk.CTkInputDialog(text="Enter income amount:", title="Add Income")
@@ -340,6 +342,7 @@ class BudgetApp(ctk.CTk):
         name_display = f"({entry.get('name', '')})" if entry.get('name') else ""
 
         display_amount = entry.get("original_amount", entry["amount"])
+    
         display_currency = entry.get("original_currency", self.selected_currency)
         
         
