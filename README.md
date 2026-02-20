@@ -22,7 +22,7 @@ To get a local copy up and running, follow these simple steps:
 
 1.  **Clone the Repository:**
     ```bash
-    git clone <your-repository-url>
+    git clone <repository-url>
     cd <project-directory>
     ```
 
@@ -37,12 +37,12 @@ To get a local copy up and running, follow these simple steps:
 
 4.  **Install Required Dependencies:**
     ```bash
-    pip install -r requirements.txt
+    pip install customtkinter requests
     ```
 
 5.  **Launch the Application:**
     ```bash
-    python your_file_name.py
+    python3 your_file_name.py
     ```
 
 Feel free to reach out or connect with me if you have any questions, feedback, or just want to discuss the project!
